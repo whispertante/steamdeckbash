@@ -146,8 +146,8 @@ migrate_game_caches () {
     echo "So, knowing the information above, do you still wish to proceed?"
     sLocalCompatDataPath="$sLocalCompatDataRoot/$nSteamId"
     sLocalShaderCachePath="$sLocalShaderCacheRoot/$nSteamId"
-    sCardCompatDataRoot="$sCardPath/SteamLibrary/compatdata"
-    sCardShaderCacheRoot="$sCardPath/SteamLibrary/shadercache"
+    sCardCompatDataRoot="$sCardPath/SteamLibrary/steamapps/compatdata"
+    sCardShaderCacheRoot="$sCardPath/SteamLibrary/steamapps/shadercache"
     sCardCompatDataPath="$sCardCompatDataRoot/$nSteamId"
     sCardShaderCachePath="$sCardShaderCacheRoot/$nSteamId"
     select yn in "Yes" "No"; do
@@ -398,13 +398,13 @@ build_storage_menu () {
             if [[ $sCardPath == "/run/media/mmcblk0p1" ]]; then
               echo
               echo "Scanning for Steam games on your MicroSD card path, please wait."
-              sLibraryType="gamingMode"
-              aGameList=($(/usr/bin/grep -e name $(find "$sCardPath" -maxdepth 1 -name steamapps -printf "%h/%f/*appmanifest* ") | grep -v ".acf.*.tmp.*" | sed -e 's/^.*_//;s/name//;s/.acf://;s/"//g;s/\ /_/g;s/\t\{1,3\}/-/g'))
+              sLibraryType="desktopMode"
+              aGameList=($(/usr/bin/grep -e name $(find "$sCardPath" -maxdepth 1 -name SteamLibrary -printf "%h/%f/*appmanifest* ") | grep -v ".acf.*.tmp.*" | sed -e 's/^.*_//;s/name//;s/.acf://;s/"//g;s/\ /_/g;s/\t\{1,3\}/-/g'))
             else
               echo
               echo "Scanning for Steam games on what seems to be a Steam desktop client library, please wait."
-              sLibraryType="desktopMode"
-              aGameList=($(/usr/bin/grep -e name $(find "$sCardPath" -maxdepth 1 -name SteamLibrary -printf "%h/%f/*appmanifest* ") | grep -v ".acf.*.tmp.*" | sed -e 's/^.*_//;s/name//;s/.acf://;s/"//g;s/\ /_/g;s/\t\{1,3\}/-/g'))
+              sLibraryType="gamingMode"
+              aGameList=($(/usr/bin/grep -e name $(find "$sCardPath" -maxdepth 1 -name steamapps -printf "%h/%f/*appmanifest* ") | grep -v ".acf.*.tmp.*" | sed -e 's/^.*_//;s/name//;s/.acf://;s/"//g;s/\ /_/g;s/\t\{1,3\}/-/g'))
             fi
             kill "$Timeout_monitor_pid"
             migrate_game_caches "${aGameList[@]}"
